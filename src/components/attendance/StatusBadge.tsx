@@ -8,29 +8,29 @@ interface StatusBadgeProps {
 
 const statusConfig: Record<
   AttendanceStatus,
-  { label: string; bgClass: string; textClass: string; dotClass: string; ringClass: string; pulse?: boolean }
+  { label: string; bgClass: string; textClass: string; dotClass: string; borderClass: string; pulse?: boolean }
 > = {
   present: {
     label: "Present",
-    bgClass: "bg-emerald-500/8 dark:bg-emerald-500/12",
+    bgClass: "bg-emerald-100 dark:bg-emerald-500/15",
     textClass: "text-emerald-700 dark:text-emerald-400",
     dotClass: "bg-emerald-500",
-    ringClass: "ring-emerald-500/20 dark:ring-emerald-400/20",
+    borderClass: "border-emerald-200 dark:border-emerald-500/30",
   },
   absent: {
     label: "Absent",
-    bgClass: "bg-red-500/8 dark:bg-red-500/12",
+    bgClass: "bg-red-100 dark:bg-red-500/15",
     textClass: "text-red-700 dark:text-red-400",
     dotClass: "bg-red-500",
-    ringClass: "ring-red-500/20 dark:ring-red-400/20",
+    borderClass: "border-red-200 dark:border-red-500/30",
     pulse: true,
   },
   leave: {
     label: "Leave",
-    bgClass: "bg-amber-500/8 dark:bg-amber-500/12",
+    bgClass: "bg-amber-100 dark:bg-amber-500/15",
     textClass: "text-amber-700 dark:text-amber-400",
     dotClass: "bg-amber-500",
-    ringClass: "ring-amber-500/20 dark:ring-amber-400/20",
+    borderClass: "border-amber-200 dark:border-amber-500/30",
   },
 };
 
@@ -40,10 +40,10 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide ring-1 transition-colors",
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border transition-all duration-200",
         config.bgClass,
         config.textClass,
-        config.ringClass,
+        config.borderClass,
         className
       )}
     >
