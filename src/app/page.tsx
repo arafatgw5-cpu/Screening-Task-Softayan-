@@ -1,65 +1,190 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React from "react";
+import { Student, AttendanceStatus } from "@/types/student";
+import { mockStudents } from "@/data/students";
+import { SummaryCards } from "@/components/attendance/SummaryCards";
+import { SearchFilter } from "@/components/attendance/SearchFilter";
+import { AttendanceTable } from "@/components/attendance/AttendanceTable";
+import { StudentCard } from "@/components/attendance/StudentCard";
+import { AttendanceModal } from "@/components/attendance/AttendanceModal";
+import { LoadingSkeleton } from "@/components/attendance/LoadingSkeleton";
+import { EmptyState } from "@/components/attendance/EmptyState";
+import { motion, Variants } from "framer-motion";
+
+type StatusFilter = "all" | AttendanceStatus;
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
+
+export default function AttendancePage() {
+  const [students, setStudents] = React.useState<Student[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [classFilter, setClassFilter] = React.useState("all");
+  const [selectedStatus, setSelectedStatus] = React.useState<StatusFilter>("all");
+  const [editingStudent, setEditingStudent] = React.useState<Student | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  // Simulate API loading
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setStudents(mockStudents);
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Combined filtering: search + class dropdown + status card
+  const filteredStudents = React.useMemo(() => {
+    return students.filter((student) => {
+      const matchesSearch = student.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesClass =
+        classFilter === "all" || student.class === classFilter;
+      const matchesStatus =
+        selectedStatus === "all" || student.status === selectedStatus;
+      return matchesSearch && matchesClass && matchesStatus;
+    });
+  }, [students, searchQuery, classFilter, selectedStatus]);
+
+  const handleEdit = (student: Student) => {
+    setEditingStudent(student);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveAttendance = (studentId: number, status: AttendanceStatus) => {
+    setStudents((prev) =>
+      prev.map((student) =>
+        student.id === studentId ? { ...student, status } : student
+      )
+    );
+  };
+
+  const handleStatusFilterChange = (status: StatusFilter) => {
+    setSelectedStatus(status);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background p-4 md:p-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              Student Attendance
+            </h1>
+            <p className="text-muted-foreground mt-1.5 text-[15px]">
+              Manage and track student attendance records
+            </p>
+          </div>
+          <LoadingSkeleton />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen p-4 md:p-8 overflow-hidden">
+      <motion.div
+        className="mx-auto max-w-7xl"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Header */}
+        <motion.div className="mb-10" variants={itemVariants}>
+          <div className="flex items-start justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                Student Attendance
+              </h1>
+              <p className="text-muted-foreground mt-1.5 text-[15px]">
+                Manage and track student attendance records
+              </p>
+            </div>
+            <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-muted-foreground bg-zinc-100/80 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/40 rounded-full px-3 py-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Summary Cards — Clickable Filters */}
+        <motion.div className="mb-10" variants={itemVariants}>
+          <SummaryCards
+            students={students}
+            selectedStatus={selectedStatus}
+            onStatusChange={handleStatusFilterChange}
+          />
+        </motion.div>
+
+        {/* Search & Filter */}
+        <motion.div className="mb-8" variants={itemVariants}>
+          <SearchFilter
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            classFilter={classFilter}
+            onClassFilterChange={setClassFilter}
+          />
+        </motion.div>
+
+        {/* Attendance List */}
+        <motion.div variants={itemVariants} className="pb-16">
+          {filteredStudents.length === 0 ? (
+            <EmptyState />
+          ) : (
+            <>
+              {/* Desktop Table */}
+              <div className="hidden md:block">
+                <AttendanceTable
+                  students={filteredStudents}
+                  onEdit={handleEdit}
+                />
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden space-y-4">
+                {filteredStudents.map((student) => (
+                  <StudentCard
+                    key={student.id}
+                    student={student}
+                    onEdit={handleEdit}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </motion.div>
+
+        {/* Edit Modal */}
+        <AttendanceModal
+          student={editingStudent}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSaveAttendance}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </motion.div>
     </div>
   );
 }
