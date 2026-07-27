@@ -88,6 +88,27 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-background via-background to-muted/20 min-h-screen antialiased;
+    @apply bg-[#F4F7FE] text-foreground min-h-screen antialiased;
+  }
+}
+
+@layer utilities {
+  @keyframes wave {
+    0% { transform: rotate(0.0deg) }
+    10% { transform: rotate(14.0deg) }
+    20% { transform: rotate(-8.0deg) }
+    30% { transform: rotate(14.0deg) }
+    40% { transform: rotate(-4.0deg) }
+    50% { transform: rotate(10.0deg) }
+    60% { transform: rotate(0.0deg) }
+    100% { transform: rotate(0.0deg) }
+  }
+  .animate-wave {
+    animation: wave 2.5s infinite;
+    transform-origin: 70% 70%;
+  }
+  .hover\:animate-waving-hand:hover {
+    animation: wave 2.5s infinite;
+    transform-origin: 70% 70%;
   }
 }
