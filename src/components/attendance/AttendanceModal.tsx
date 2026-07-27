@@ -4,7 +4,7 @@ import React from "react";
 import { Student, AttendanceStatus } from "@/types/student";
 import { StatusBadge } from "./StatusBadge";
 import { Check, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface AttendanceModalProps {
@@ -36,13 +36,13 @@ const statusOptions: { value: AttendanceStatus; label: string; dotColor: string;
 ];
 
 // Animation variants
-const backdropVariants = {
+const backdropVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
   exit: { opacity: 0 },
 };
 
-const modalVariants = {
+const modalVariants: Variants = {
   hidden: {
     opacity: 0,
     scale: 0.95,
