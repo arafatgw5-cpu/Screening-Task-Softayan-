@@ -1,36 +1,199 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 Student Attendance Dashboard
 
-## Getting Started
+A modern, responsive, and accessible **Student Attendance Dashboard** built with **Next.js (App Router)**, **TypeScript**, and **Tailwind CSS** for the **Softayan Frontend Developer Screening Task**.
 
-First, run the development server:
+---
+
+## 🌐 Live Demo
+
+**Live:** https://screening-task-softayan.vercel.app/
+
+## 📂 Repository
+
+**GitHub:** https://github.com/arafatgw5-cpu/Screening-Task-Softayan-
+
+---
+
+# ✨ Features
+
+### ✅ Core Features
+
+* Display student attendance list
+* Search students by name (case-insensitive)
+* Filter students by class
+* Update attendance status using a modal
+* Client-side state management
+* Responsive layout for mobile, tablet, and desktop
+* Empty state when no students match the filters
+
+### 🎨 Attendance Status
+
+| Status     | Color  |
+| ---------- | ------ |
+| 🟢 Present | Green  |
+| 🔴 Absent  | Red    |
+| 🟡 Leave   | Yellow |
+
+Each status is represented using a color-coded badge for quick identification.
+
+---
+
+## ⭐ Additional Features
+
+* Attendance summary cards
+* Skeleton loading state
+* Smooth animations with Framer Motion
+* Modern UI/UX
+* Reusable components
+* TypeScript interfaces
+* Dark mode support
+* Accessibility-focused design
+
+---
+
+# 🛠️ Tech Stack
+
+* Next.js (App Router)
+* React
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+* Lucide React
+
+---
+
+# 📁 Project Structure
+
+```text
+src/
+│
+├── app/
+├── components/
+├── data/
+├── hooks/
+├── lib/
+├── types/
+└── utils/
+```
+
+---
+
+# 🚀 Getting Started
+
+## Clone the repository
+
+```bash
+git clone https://github.com/arafatgw5-cpu/Screening-Task-Softayan-.git
+```
+
+## Navigate to the project
+
+```bash
+cd Screening-Task-Softayan-
+```
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# 📦 Production Build
 
-To learn more about Next.js, take a look at the following resources:
+Build the application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run the production server
 
-## Deploy on Vercel
+```bash
+npm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 📱 Responsive Design
+
+The application is optimized for:
+
+* 📱 Mobile
+* 📲 Tablet
+* 💻 Laptop
+* 🖥️ Desktop
+
+Designed to provide a consistent user experience across all screen sizes.
+
+---
+
+# 📊 Dashboard Overview
+
+The dashboard includes:
+
+* Total Students
+* Present Students
+* Absent Students
+* Students on Leave
+
+These summary cards update dynamically based on the current attendance data.
+
+---
+
+# ✅ Completed Requirements
+
+* ✔ Student Attendance List
+* ✔ Search by Name
+* ✔ Filter by Class
+* ✔ Status Badge
+* ✔ Attendance Update Modal
+* ✔ Responsive Design
+* ✔ Empty State
+* ✔ Skeleton Loading
+* ✔ Attendance Summary Cards
+* ✔ Reusable Components
+* ✔ TypeScript Interfaces
+* ✔ Modern UI Design
+
+---
+
+# 💡 Future Improvements
+
+* Backend API integration
+* Persistent database support
+* Authentication & authorization
+* Export attendance reports
+* Pagination
+* Advanced filters
+* Unit & Integration testing
+
+---
+
+# 👨‍💻 Author
+
+**Arafat**
+
+Frontend Developer
+
+* GitHub: https://github.com/arafatgw5-cpu
+* Portfolio: https://arafat-nexus-2.vercel.app
+
+---
+
+# 📄 License
+
+This project was created for the **Softayan Frontend Developer Screening Task** and is intended solely for evaluation purposes.
